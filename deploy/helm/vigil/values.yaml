@@ -1,17 +1,34 @@
 api:
   replicas: 2
-  image: {repository: ghcr.io/belimm01/vigil-api, tag: "0.1.0", pullPolicy: IfNotPresent}
+  image:
+    repository: ghcr.io/belimm01/vigil-api
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    pullPolicy: IfNotPresent
 worker:
   replicas: 1
-  image: {repository: ghcr.io/belimm01/vigil-worker, tag: "0.1.0", pullPolicy: IfNotPresent}
+  image:
+    repository: ghcr.io/belimm01/vigil-worker
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    pullPolicy: IfNotPresent
   concurrency: 10
 web:
   replicas: 2
-  image: {repository: ghcr.io/belimm01/vigil-web, tag: "0.1.0", pullPolicy: IfNotPresent}
+  image:
+    repository: ghcr.io/belimm01/vigil-web
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    pullPolicy: IfNotPresent
 secret:
   existingSecret: vigil-runtime
   databaseURLKey: database-url
   jwtSecretKey: jwt-secret
+smtp:
+  enabled: false
+  existingSecret: vigil-smtp
+  hostKey: host
+  portKey: port
+  userKey: user
+  passwordKey: password
+  fromKey: from
 resources:
   api:
     requests: {cpu: 100m, memory: 128Mi}

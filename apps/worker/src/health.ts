@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 export type WorkerHealth = {
   startedAt: number;
   lastSuccessfulTickAt: number | null;
+  readinessMaxAgeMs: number;
 };
 
 export function healthStatus(state: WorkerHealth, path: string, now = Date.now()) {
@@ -10,7 +11,8 @@ export function healthStatus(state: WorkerHealth, path: string, now = Date.now()
     return { status: 200, body: { status: "ok", uptimeMs: now - state.startedAt } };
   }
   if (path === "/health/ready") {
-    const ready = state.lastSuccessfulTickAt !== null;
+    const ready =
+      state.lastSuccessfulTickAt !== null && now - state.lastSuccessfulTickAt <= state.readinessMaxAgeMs;
     return {
       status: ready ? 200 : 503,
       body: { status: ready ? "ready" : "starting", lastSuccessfulTickAt: state.lastSuccessfulTickAt },

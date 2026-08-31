@@ -23,7 +23,11 @@ const notifier: Notifier = {
 
 console.log("vigil worker started");
 
-const health: WorkerHealth = { startedAt: Date.now(), lastSuccessfulTickAt: null };
+const health: WorkerHealth = {
+  startedAt: Date.now(),
+  lastSuccessfulTickAt: null,
+  readinessMaxAgeMs: Math.max(60_000, config.TICK_INTERVAL_MS * 3),
+};
 startHealthServer(config.HEALTH_PORT, health);
 
 const runTick = async () => {

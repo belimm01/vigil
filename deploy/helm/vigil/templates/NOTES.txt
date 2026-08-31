@@ -2,4 +2,7 @@ Vigil is available inside the cluster at:
   http://{{ include "vigil.fullname" . }}:{{ .Values.service.port }}
 
 Create {{ .Values.secret.existingSecret }} with keys {{ .Values.secret.databaseURLKey }} and {{ .Values.secret.jwtSecretKey }} before installation.
+{{- if .Values.smtp.enabled }}
+Create {{ .Values.smtp.existingSecret }} with keys {{ .Values.smtp.hostKey }}, {{ .Values.smtp.portKey }}, {{ .Values.smtp.userKey }}, {{ .Values.smtp.passwordKey }}, and {{ .Values.smtp.fromKey }}.
+{{- end }}
 Database migrations must be applied before rolling out the workloads.
