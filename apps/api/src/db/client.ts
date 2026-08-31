@@ -1,11 +1,5 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { createDb, schema } from "@vigil/db";
 import { loadConfig } from "../config.js";
-import * as schema from "./schema.js";
 
-const { DATABASE_URL } = loadConfig();
-
-const queryClient = postgres(DATABASE_URL);
-
-export const db = drizzle(queryClient, { schema });
+export const db = createDb(loadConfig().DATABASE_URL);
 export { schema };
