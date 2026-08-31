@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { HTTPException } from "hono/http-exception";
+import { alertChannels } from "./routes/alert-channels.js";
 import { auth } from "./routes/auth.js";
 import { health } from "./routes/health.js";
 import { monitors } from "./routes/monitors.js";
@@ -17,6 +18,7 @@ export function createApp() {
   app.route("/auth", auth);
   app.route("/orgs", orgs);
   app.route("/monitors", monitors);
+  app.route("/alert-channels", alertChannels);
 
   app.onError((err, c) => {
     if (err instanceof HTTPException) {
