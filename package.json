@@ -1,0 +1,23 @@
+{
+  "name": "vigil",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Synthetic uptime and performance monitoring platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dev:api": "npm run dev --workspace @vigil/api",
+    "dev:worker": "npm run dev --workspace @vigil/worker",
+    "dev:web": "npm run dev --workspace @vigil/web",
+    "migrate": "npm run migrate --workspace @vigil/api"
+  },
+  "license": "MIT"
+}
