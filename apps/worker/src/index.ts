@@ -1,6 +1,7 @@
 import { createDb } from "@vigil/db";
 import type { Notifier } from "./alerts.js";
 import { loadConfig } from "./config.js";
+import { startHealthServer, type WorkerHealth } from "./health.js";
 import { httpFetcher } from "./http.js";
 import { tick } from "./scheduler.js";
 
@@ -22,9 +23,13 @@ const notifier: Notifier = {
 
 console.log("vigil worker started");
 
+const health: WorkerHealth = { startedAt: Date.now(), lastSuccessfulTickAt: null };
+startHealthServer(config.HEALTH_PORT, health);
+
 const runTick = async () => {
   try {
     const ran = await tick(db, httpFetcher, config.CHECK_CONCURRENCY, notifier);
+    health.lastSuccessfulTickAt = Date.now();
     if (ran > 0) console.log(`ran ${ran} check(s)`);
   } catch (err) {
     console.error("tick failed", err);

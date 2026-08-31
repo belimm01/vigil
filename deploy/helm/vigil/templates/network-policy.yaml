@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: {{ include "vigil.fullname" . }}-default-deny}
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: {{ include "vigil.fullname" . }}-allow-web}
+spec:
+  podSelector:
+    matchLabels: {app.kubernetes.io/instance: {{ .Release.Name }}, app.kubernetes.io/component: web}
+  ingress:
+    - ports: [{protocol: TCP, port: 8080}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: {{ include "vigil.fullname" . }}-web-to-api}
+spec:
+  podSelector:
+    matchLabels: {app.kubernetes.io/instance: {{ .Release.Name }}, app.kubernetes.io/component: api}
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {app.kubernetes.io/instance: {{ .Release.Name }}, app.kubernetes.io/component: web}
+      ports: [{protocol: TCP, port: 4000}]

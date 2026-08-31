@@ -98,6 +98,22 @@ delivery row before sending so a failed send is retried on the next tick rather
 than duplicated. Email uses SMTP — set `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`/`SMTP_FROM`
 for the worker (see `.env.example` for a Gmail app-password example).
 
+## Production engineering
+
+- [ADR: separate API and worker](docs/adr/0001-separate-api-and-worker.md) records the scaling, coordination, and rollout boundary.
+- [Service objectives](docs/slo.md) distinguish platform availability from monitored-target failures.
+- [Security model](docs/security.md) documents tenant authorization, secret handling, and the outbound-request/SSRF boundary.
+- [Operations runbook](docs/runbook.md) covers scheduler recovery, migration failure, dashboard routing, and JWT rotation.
+
+The multi-stage root `Dockerfile` builds non-root API, worker, and web targets. The Helm chart under `deploy/helm/vigil` deploys them independently with resource guarantees, health probes, NetworkPolicy, and pre-existing Secrets:
+
+```bash
+helm lint deploy/helm/vigil
+helm template vigil deploy/helm/vigil > /tmp/vigil.yaml
+```
+
+Default image coordinates are examples. Build the `api`, `worker`, and `web` targets or override repositories and immutable tags. Database migrations must complete before workload rollout.
+
 ## Testing
 
 ```bash
