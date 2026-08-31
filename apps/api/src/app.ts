@@ -5,6 +5,7 @@ import { HTTPException } from "hono/http-exception";
 import { auth } from "./routes/auth.js";
 import { health } from "./routes/health.js";
 import { monitors } from "./routes/monitors.js";
+import { orgs } from "./routes/orgs.js";
 
 export function createApp() {
   const app = new Hono();
@@ -14,6 +15,7 @@ export function createApp() {
 
   app.route("/health", health);
   app.route("/auth", auth);
+  app.route("/orgs", orgs);
   app.route("/monitors", monitors);
 
   app.onError((err, c) => {
