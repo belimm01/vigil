@@ -11,9 +11,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build -w @vigil/core -w @vigil/db -w @vigil/api -w @vigil/worker",
     "test": "npm run test --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run build -w @vigil/core -w @vigil/db && npm run typecheck --workspaces --if-present",
     "dev:api": "npm run dev --workspace @vigil/api",
     "dev:worker": "npm run dev --workspace @vigil/worker",
     "dev:web": "npm run dev --workspace @vigil/web",
