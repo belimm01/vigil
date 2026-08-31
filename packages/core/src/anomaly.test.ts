@@ -35,7 +35,6 @@ describe("classifyLatency", () => {
   });
 
   it("respects a custom factor", () => {
-    // p95 is 100, factor 3 => threshold 300, so 250 is still normal.
     expect(classifyLatency(250, baseline, { factor: 3 })).toBe("normal");
   });
 });

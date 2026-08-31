@@ -18,7 +18,6 @@ const step = (over: Partial<StepConfig> = {}): StepConfig => ({
   ...over,
 });
 
-// Clock that advances 50ms on each read.
 const fakeClock = () => {
   let t = 0;
   return () => (t += 50);

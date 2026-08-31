@@ -6,7 +6,6 @@ export type Role = "owner" | "admin" | "viewer";
 
 const rank: Record<Role, number> = { viewer: 0, admin: 1, owner: 2 };
 
-/** Ensure a user belongs to an org with at least `min` privileges. */
 export async function requireMembership(
   userId: string,
   orgId: string,

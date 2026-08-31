@@ -47,7 +47,6 @@ async function runPool<T>(items: T[], concurrency: number, task: (item: T) => Pr
   await Promise.all(workers);
 }
 
-/** Run every active monitor whose interval has elapsed. Returns how many ran. */
 export async function tick(db: Database, fetcher: Fetcher, concurrency: number): Promise<number> {
   const monitors = await db.query.monitors.findMany({
     where: eq(schema.monitors.isActive, true),

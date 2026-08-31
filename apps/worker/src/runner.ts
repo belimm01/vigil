@@ -53,12 +53,6 @@ function readJsonPath(raw: string, path: string): string | undefined {
   return node == null ? undefined : String(node);
 }
 
-/**
- * Execute a monitor's steps in order. Values extracted from one response are
- * interpolated into `{{name}}` placeholders in later steps, which is what makes
- * multi-step journeys work. The first failing step short-circuits to "down".
- * `fetcher` and `now` are injected so this stays pure and unit-testable.
- */
 export async function runMonitor(
   steps: StepConfig[],
   fetcher: Fetcher,

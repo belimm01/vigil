@@ -141,7 +141,6 @@ export const alertDeliveries = pgTable(
     sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({
-    // Idempotency guard: one alert per incident/channel/transition.
     once: unique("alert_deliveries_once_uq").on(t.incidentId, t.channelId, t.transition),
   }),
 );
