@@ -1,0 +1,151 @@
+:root {
+  --bg: #0f1115;
+  --card: #171a21;
+  --border: #262a33;
+  --text: #e6e8ec;
+  --muted: #8b90a0;
+  --accent: #4f9cff;
+  --up: #3fb950;
+  --down: #f85149;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  color: var(--down);
+  font-size: 0.9rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+input,
+button {
+  font: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.7rem;
+  background: #0d0f13;
+  color: var(--text);
+}
+
+button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #06121f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+button.link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 0;
+  font-weight: 500;
+}
+
+.auth {
+  max-width: 360px;
+  margin: 12vh auto;
+  text-align: center;
+  display: grid;
+  gap: 1rem;
+}
+
+.auth form {
+  display: grid;
+  gap: 0.8rem;
+  text-align: left;
+}
+
+.auth label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.dashboard {
+  max-width: 720px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.dashboard header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard header div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.row input {
+  flex: 1;
+}
+
+.monitors {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.monitor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+.badge.active {
+  color: var(--up);
+  border-color: var(--up);
+}
+
+.badge.paused {
+  color: var(--muted);
+}
