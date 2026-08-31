@@ -91,6 +91,13 @@ later steps — enough to script a login-then-fetch flow.
 **Idempotent alerting.** The `alert_deliveries` table carries a unique constraint
 on `(incident, channel, transition)`, so a retried job can never double-notify.
 
+**Alert channels.** An organization can register Slack, email, or generic webhook
+channels via `/alert-channels`. When the worker opens or resolves an incident it
+formats a message in the domain core and fans it out to every channel, claiming a
+delivery row before sending so a failed send is retried on the next tick rather
+than duplicated. Email uses SMTP — set `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`/`SMTP_FROM`
+for the worker (see `.env.example` for a Gmail app-password example).
+
 ## Testing
 
 ```bash
@@ -104,7 +111,7 @@ npm run typecheck
 - [x] Auth, organizations, monitor CRUD, scheduler, incident engine, anomaly detection
 - [ ] BullMQ + Redis job queue with retries and backoff (replacing the interval scheduler)
 - [ ] WebSocket live dashboard and incident timeline
-- [ ] Email / Slack / webhook alert channels
+- [x] Email / Slack / webhook alert channels
 - [ ] Public status page with 90-day uptime bars from the daily rollup
 - [ ] Playwright end-to-end coverage
 
