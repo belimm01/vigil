@@ -10,10 +10,6 @@ export interface MonitorRef {
   failThreshold: number;
 }
 
-/**
- * Persist a check result, downgrade healthy-but-slow responses to "degraded",
- * and open or resolve the monitor's incident accordingly.
- */
 export async function persistCheck(
   db: Database,
   monitor: MonitorRef,

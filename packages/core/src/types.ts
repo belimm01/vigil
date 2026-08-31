@@ -13,8 +13,6 @@ export interface CheckResult {
 }
 
 export interface MonitorState {
-  /** Consecutive failing results before an incident is opened. */
   failThreshold: number;
-  /** The currently open incident, if any. */
   openIncident: { id: string; startedAt: Date } | null;
 }
