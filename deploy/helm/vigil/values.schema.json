@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["api", "worker", "web", "secret"],
+  "properties": {
+    "api": { "$ref": "#/definitions/component" },
+    "worker": {
+      "allOf": [
+        { "$ref": "#/definitions/component" },
+        { "type": "object", "properties": { "concurrency": { "type": "integer", "minimum": 1, "maximum": 100 } } }
+      ]
+    },
+    "web": { "$ref": "#/definitions/component" },
+    "secret": {
+      "type": "object",
+      "required": ["existingSecret", "databaseURLKey", "jwtSecretKey"],
+      "properties": {
+        "existingSecret": { "type": "string", "minLength": 1 },
+        "databaseURLKey": { "type": "string", "minLength": 1 },
+        "jwtSecretKey": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "definitions": {
+    "component": {
+      "type": "object",
+      "required": ["replicas", "image"],
+      "properties": {
+        "replicas": { "type": "integer", "minimum": 1 },
+        "image": {
+          "type": "object",
+          "required": ["repository", "digest", "pullPolicy"],
+          "properties": {
+            "repository": { "type": "string", "minLength": 1 },
+            "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "pullPolicy": { "type": "string", "enum": ["IfNotPresent", "Always", "Never"] }
+          }
+        }
+      }
+    }
+  }
+}

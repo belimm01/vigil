@@ -112,7 +112,7 @@ helm lint deploy/helm/vigil
 helm template vigil deploy/helm/vigil > /tmp/vigil.yaml
 ```
 
-Default image coordinates are examples. Build the `api`, `worker`, and `web` targets or override repositories and immutable tags. Database migrations must complete before workload rollout.
+Default image repositories and zero digests are placeholders. Override each repository and SHA-256 digest with a published image. Database migrations must complete before workload rollout.
 
 ## Testing
 

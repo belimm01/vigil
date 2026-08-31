@@ -17,6 +17,18 @@ describe("api app", () => {
     expect(await res.json()).toMatchObject({ status: "ok" });
   });
 
+  it("separates liveness from database readiness", async () => {
+    const { createHealth } = await import("./routes/health.js");
+    const unavailable = createHealth(async () => {
+      throw new Error("database unavailable");
+    });
+    expect((await unavailable.request("/live")).status).toBe(200);
+    expect((await unavailable.request("/ready")).status).toBe(503);
+
+    const available = createHealth(async () => undefined);
+    expect((await available.request("/ready")).status).toBe(200);
+  });
+
   it("returns 404 for unknown routes", async () => {
     const res = await app.request("/does-not-exist");
     expect(res.status).toBe(404);
