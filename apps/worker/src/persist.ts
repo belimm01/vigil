@@ -39,16 +39,26 @@ export async function persistCheck(
     error: outcome.error,
   });
 
-  const transition = await reconcileIncident(db, monitor);
-  return { status, transition };
+  const reconciled = await reconcileIncident(db, monitor);
+  return { status, ...reconciled };
+}
+
+export interface IncidentRef {
+  id: string;
+  cause: string | null;
+  at: Date;
 }
 
 export interface CheckStatusApplied {
   status: "up" | "down" | "degraded";
   transition: "opened" | "resolved" | "none";
+  incident: IncidentRef | null;
 }
 
-async function reconcileIncident(db: Database, monitor: MonitorRef): Promise<CheckStatusApplied["transition"]> {
+async function reconcileIncident(
+  db: Database,
+  monitor: MonitorRef,
+): Promise<{ transition: CheckStatusApplied["transition"]; incident: IncidentRef | null }> {
   const rows = await db
     .select()
     .from(schema.checkResults)
@@ -74,19 +84,27 @@ async function reconcileIncident(db: Database, monitor: MonitorRef): Promise<Che
   });
 
   if (decision.action === "open") {
-    await db
+    const [created] = await db
       .insert(schema.incidents)
-      .values({ monitorId: monitor.id, status: "open", cause: decision.cause });
-    return "opened";
+      .values({ monitorId: monitor.id, status: "open", cause: decision.cause })
+      .returning();
+    return {
+      transition: "opened",
+      incident: { id: created!.id, cause: created!.cause, at: created!.startedAt },
+    };
   }
 
   if (decision.action === "resolve" && open) {
-    await db
+    const [updated] = await db
       .update(schema.incidents)
       .set({ status: "resolved", resolvedAt: new Date() })
-      .where(eq(schema.incidents.id, open.id));
-    return "resolved";
+      .where(eq(schema.incidents.id, open.id))
+      .returning();
+    return {
+      transition: "resolved",
+      incident: { id: updated!.id, cause: updated!.cause, at: updated!.resolvedAt! },
+    };
   }
 
-  return "none";
+  return { transition: "none", incident: null };
 }

@@ -35,4 +35,24 @@ describe("api app", () => {
     });
     expect(res.status).toBe(400);
   });
+
+  it("rejects unauthenticated access to alert channels", async () => {
+    const res = await app.request("/alert-channels?orgId=00000000-0000-0000-0000-000000000000");
+    expect(res.status).toBe(401);
+  });
+
+  it("rejects alert channels with an invalid config for their type", async () => {
+    const { signToken } = await import("./lib/tokens.js");
+    const token = await signToken("00000000-0000-0000-0000-000000000001", "access");
+    const res = await app.request("/alert-channels", {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        orgId: "00000000-0000-0000-0000-000000000000",
+        type: "slack",
+        config: { webhookUrl: "not-a-url" },
+      }),
+    });
+    expect(res.status).toBe(400);
+  });
 });
