@@ -4,6 +4,11 @@ const schema = z.object({
   DATABASE_URL: z.string().url(),
   CHECK_CONCURRENCY: z.coerce.number().int().positive().default(10),
   TICK_INTERVAL_MS: z.coerce.number().int().positive().default(15_000),
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.coerce.number().int().positive().default(587),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  SMTP_FROM: z.string().optional(),
 });
 
 export type WorkerConfig = z.infer<typeof schema>;

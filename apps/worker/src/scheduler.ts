@@ -1,5 +1,6 @@
 import { schema, type Database } from "@vigil/db";
 import { asc, desc, eq } from "drizzle-orm";
+import { dispatchAlerts, type Notifier } from "./alerts.js";
 import { persistCheck } from "./persist.js";
 import {
   runMonitor,
@@ -47,7 +48,12 @@ async function runPool<T>(items: T[], concurrency: number, task: (item: T) => Pr
   await Promise.all(workers);
 }
 
-export async function tick(db: Database, fetcher: Fetcher, concurrency: number): Promise<number> {
+export async function tick(
+  db: Database,
+  fetcher: Fetcher,
+  concurrency: number,
+  notifier?: Notifier,
+): Promise<number> {
   const monitors = await db.query.monitors.findMany({
     where: eq(schema.monitors.isActive, true),
     with: { steps: { orderBy: asc(schema.monitorSteps.stepOrder) } },
@@ -68,6 +74,14 @@ export async function tick(db: Database, fetcher: Fetcher, concurrency: number):
       );
       if (applied.transition !== "none") {
         console.log(`monitor "${monitor.name}" incident ${applied.transition}`);
+        if (notifier) {
+          await dispatchAlerts(
+            db,
+            { orgId: monitor.orgId, monitorName: monitor.name },
+            applied,
+            notifier,
+          ).catch((err) => console.error(`alert dispatch for monitor ${monitor.id} failed`, err));
+        }
       }
     } catch (err) {
       console.error(`monitor ${monitor.id} check failed`, err);
