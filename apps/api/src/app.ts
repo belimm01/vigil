@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { HTTPException } from "hono/http-exception";
+import { auth } from "./routes/auth.js";
 import { health } from "./routes/health.js";
 
 export function createApp() {
@@ -11,6 +12,7 @@ export function createApp() {
   app.use("*", cors());
 
   app.route("/health", health);
+  app.route("/auth", auth);
 
   app.onError((err, c) => {
     if (err instanceof HTTPException) {
