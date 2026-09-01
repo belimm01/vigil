@@ -11,6 +11,8 @@ export default defineConfig({
       "/auth": apiTarget,
       "/orgs": apiTarget,
       "/monitors": apiTarget,
+      "/incidents": apiTarget,
+      "/alert-channels": apiTarget,
       "/health": apiTarget,
     },
   },

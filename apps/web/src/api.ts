@@ -16,6 +16,10 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   });
 
   if (!res.ok) {
+    if (res.status === 401 && token) {
+      clearToken();
+      window.dispatchEvent(new Event("vigil:unauthorized"));
+    }
     const body = (await res.json().catch(() => ({ error: res.statusText }))) as { error?: string };
     throw new Error(body.error ?? "Request failed");
   }
