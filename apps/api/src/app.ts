@@ -5,6 +5,7 @@ import { HTTPException } from "hono/http-exception";
 import { alertChannels } from "./routes/alert-channels.js";
 import { auth } from "./routes/auth.js";
 import { health } from "./routes/health.js";
+import { incidents } from "./routes/incidents.js";
 import { monitors } from "./routes/monitors.js";
 import { orgs } from "./routes/orgs.js";
 
@@ -18,6 +19,7 @@ export function createApp() {
   app.route("/auth", auth);
   app.route("/orgs", orgs);
   app.route("/monitors", monitors);
+  app.route("/incidents", incidents);
   app.route("/alert-channels", alertChannels);
 
   app.onError((err, c) => {
