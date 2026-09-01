@@ -15,12 +15,12 @@ export function createApp() {
   app.use("*", logger());
   app.use("*", cors());
 
-  app.route("/health", health);
-  app.route("/auth", auth);
-  app.route("/orgs", orgs);
-  app.route("/monitors", monitors);
-  app.route("/incidents", incidents);
-  app.route("/alert-channels", alertChannels);
+  app.route("/api/health", health);
+  app.route("/api/auth", auth);
+  app.route("/api/orgs", orgs);
+  app.route("/api/monitors", monitors);
+  app.route("/api/incidents", incidents);
+  app.route("/api/alert-channels", alertChannels);
 
   app.onError((err, c) => {
     if (err instanceof HTTPException) {

@@ -31,9 +31,9 @@ spec:
               valueFrom: {secretKeyRef: {name: {{ .Values.secret.existingSecret }}, key: {{ .Values.secret.databaseURLKey }}}}
             - name: JWT_SECRET
               valueFrom: {secretKeyRef: {name: {{ .Values.secret.existingSecret }}, key: {{ .Values.secret.jwtSecretKey }}}}
-          startupProbe: {httpGet: {path: /health/live, port: http}, periodSeconds: 5, failureThreshold: 24}
-          readinessProbe: {httpGet: {path: /health/ready, port: http}, periodSeconds: 10}
-          livenessProbe: {httpGet: {path: /health/live, port: http}, periodSeconds: 10}
+          startupProbe: {httpGet: {path: /api/health/live, port: http}, periodSeconds: 5, failureThreshold: 24}
+          readinessProbe: {httpGet: {path: /api/health/ready, port: http}, periodSeconds: 10}
+          livenessProbe: {httpGet: {path: /api/health/live, port: http}, periodSeconds: 10}
           securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
           resources:
             {{- toYaml .Values.resources.api | nindent 12 }}

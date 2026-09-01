@@ -9,7 +9,7 @@
 
 ## API is healthy but dashboard is unavailable
 
-Check the web pod, nginx configuration, and the web-to-API Service route. `/health` is served by the API and should be tested through the same ingress path as the browser.
+Check the web pod, nginx configuration, and the web-to-API Service route. `/api/health` is served by the API and should be tested through the same ingress path as the browser.
 
 ## Migration fails
 
