@@ -48,6 +48,24 @@ describe("api app", () => {
     expect(res.status).toBe(400);
   });
 
+  it("rejects unauthenticated access to monitor results and summary", async () => {
+    const id = "00000000-0000-0000-0000-000000000000";
+    expect((await app.request(`/monitors/${id}/results`)).status).toBe(401);
+    expect((await app.request(`/monitors/${id}/summary`)).status).toBe(401);
+  });
+
+  it("rejects unauthenticated access to incidents", async () => {
+    const res = await app.request("/incidents?orgId=00000000-0000-0000-0000-000000000000");
+    expect(res.status).toBe(401);
+  });
+
+  it("rejects incident queries without an organization", async () => {
+    const { signToken } = await import("./lib/tokens.js");
+    const token = await signToken("00000000-0000-0000-0000-000000000001", "access");
+    const res = await app.request("/incidents", { headers: { authorization: `Bearer ${token}` } });
+    expect(res.status).toBe(400);
+  });
+
   it("rejects unauthenticated access to alert channels", async () => {
     const res = await app.request("/alert-channels?orgId=00000000-0000-0000-0000-000000000000");
     expect(res.status).toBe(401);
