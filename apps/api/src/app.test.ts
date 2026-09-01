@@ -12,7 +12,7 @@ beforeAll(async () => {
 
 describe("api app", () => {
   it("serves the health endpoint", async () => {
-    const res = await app.request("/health");
+    const res = await app.request("/api/health");
     expect(res.status).toBe(200);
     expect(await res.json()).toMatchObject({ status: "ok" });
   });
@@ -30,17 +30,17 @@ describe("api app", () => {
   });
 
   it("returns 404 for unknown routes", async () => {
-    const res = await app.request("/does-not-exist");
+    const res = await app.request("/api/does-not-exist");
     expect(res.status).toBe(404);
   });
 
   it("rejects unauthenticated access to monitors", async () => {
-    const res = await app.request("/monitors?orgId=00000000-0000-0000-0000-000000000000");
+    const res = await app.request("/api/monitors?orgId=00000000-0000-0000-0000-000000000000");
     expect(res.status).toBe(401);
   });
 
   it("rejects malformed registration payloads", async () => {
-    const res = await app.request("/auth/register", {
+    const res = await app.request("/api/auth/register", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ email: "not-an-email", password: "short" }),
@@ -50,31 +50,31 @@ describe("api app", () => {
 
   it("rejects unauthenticated access to monitor results and summary", async () => {
     const id = "00000000-0000-0000-0000-000000000000";
-    expect((await app.request(`/monitors/${id}/results`)).status).toBe(401);
-    expect((await app.request(`/monitors/${id}/summary`)).status).toBe(401);
+    expect((await app.request(`/api/monitors/${id}/results`)).status).toBe(401);
+    expect((await app.request(`/api/monitors/${id}/summary`)).status).toBe(401);
   });
 
   it("rejects unauthenticated access to incidents", async () => {
-    const res = await app.request("/incidents?orgId=00000000-0000-0000-0000-000000000000");
+    const res = await app.request("/api/incidents?orgId=00000000-0000-0000-0000-000000000000");
     expect(res.status).toBe(401);
   });
 
   it("rejects incident queries without an organization", async () => {
     const { signToken } = await import("./lib/tokens.js");
     const token = await signToken("00000000-0000-0000-0000-000000000001", "access");
-    const res = await app.request("/incidents", { headers: { authorization: `Bearer ${token}` } });
+    const res = await app.request("/api/incidents", { headers: { authorization: `Bearer ${token}` } });
     expect(res.status).toBe(400);
   });
 
   it("rejects unauthenticated access to alert channels", async () => {
-    const res = await app.request("/alert-channels?orgId=00000000-0000-0000-0000-000000000000");
+    const res = await app.request("/api/alert-channels?orgId=00000000-0000-0000-0000-000000000000");
     expect(res.status).toBe(401);
   });
 
   it("rejects alert channels with an invalid config for their type", async () => {
     const { signToken } = await import("./lib/tokens.js");
     const token = await signToken("00000000-0000-0000-0000-000000000001", "access");
-    const res = await app.request("/alert-channels", {
+    const res = await app.request("/api/alert-channels", {
       method: "POST",
       headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
       body: JSON.stringify({

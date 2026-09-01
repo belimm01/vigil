@@ -92,7 +92,7 @@ later steps — enough to script a login-then-fetch flow.
 on `(incident, channel, transition)`, so a retried job can never double-notify.
 
 **Alert channels.** An organization can register Slack, email, or generic webhook
-channels via `/alert-channels`. When the worker opens or resolves an incident it
+channels via `/api/alert-channels`. When the worker opens or resolves an incident it
 formats a message in the domain core and fans it out to every channel, claiming a
 delivery row before sending so a failed send is retried on the next tick rather
 than duplicated. Email uses SMTP — set `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`/`SMTP_FROM`
