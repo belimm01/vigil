@@ -133,4 +133,4 @@ npm run typecheck
 
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 Mykyta Belimenko.
