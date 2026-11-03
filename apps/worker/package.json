@@ -14,8 +14,8 @@
     "@vigil/core": "*",
     "@vigil/db": "*",
     "drizzle-orm": "^0.45.2",
-    "nodemailer": "^10.1.0",
-    "zod": "^3.23.8"
+    "nodemailer": "^10.3.1",
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "^22.7.0",

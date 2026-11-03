@@ -11,7 +11,7 @@ import { requireAuth, type AuthVars } from "../middleware/auth.js";
 const stepInput = z.object({
   url: z.string().url(),
   method: z.string().default("GET"),
-  headers: z.record(z.string()).default({}),
+  headers: z.record(z.string(), z.string()).default({}),
   body: z.unknown().optional(),
   expectedStatus: z.number().int().default(200),
   assertions: z.array(z.unknown()).default([]),
