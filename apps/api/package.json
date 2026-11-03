@@ -12,15 +12,15 @@
     "migrate": "tsx --env-file=../../.env src/db/migrate.ts"
   },
   "dependencies": {
-    "@hono/node-server": "^1.13.0",
-    "@hono/zod-validator": "^0.4.1",
+    "@hono/node-server": "^2.1.3",
+    "@hono/zod-validator": "^0.7.6",
     "@vigil/core": "*",
     "@vigil/db": "*",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.7",
     "jose": "^5.9.0",
-    "nodemailer": "^10.1.0",
-    "zod": "^3.23.8"
+    "nodemailer": "^10.3.1",
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "^22.7.0",
